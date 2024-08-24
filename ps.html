@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #cfe8f6; /* Pastel blue background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 600px;
+            height: 300px;
+            margin-bottom: 20px;
+            position: relative; /* For positioning the close button */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 26px;
+            color: #2b547e; /* Darker blue for heading */
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: calc(100% - 90px);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #2b547e; /* Dark blue button */
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background-color: #1e3e5c;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            background-color: #f1f7fd; /* Light pastel blue */
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #cfe8f6;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .cross-button {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cross-button:hover {
+            color: #c82333;
+        }
+
+        .new-list-button {
+            padding: 10px 20px;
+            background-color: #2b547e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .new-list-button:hover {
+            background-color: #1e3e5c;
+        }
+
+        .remove-list-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .remove-list-button:hover {
+            color: #c82333;
+        }
+
+        .container .todo-container input {
+            margin-bottom: 10px;
+        }
+        header h1 {
+               margin-bottom: 150px;
+               font-size: 100px;
+        }
+    </style>
+</head>
+<body>
+    <header color="#2b547e"><h1>TASK TRACKER</h1></header>
+
+    <!-- Container for each To-Do List -->
+    <div id="list-container">
+        <div class="container">
+            <button class="remove-list-button" onclick="removeList(this)">✖</button>
+            <h1 contenteditable="true">Enter a suitable Heading</h1>
+            <div class="todo-container">
+                <input type="text" id="new-item" placeholder="Add a new item...">
+                <button onclick="addItem(this)">Add</button>
+                <ul class="todo-list">
+                    <!-- List items will be added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button to create a new To-Do List -->
+    <button class="new-list-button" onclick="createNewList()">+ New To-Do List</button>
+
+    <script>
+        function addItem(button) {
+            const input = button.previousElementSibling;
+            const value = input.value.trim();
+
+            if (value) {
+                const list = button.nextElementSibling;
+
+                // Create new list item
+                const li = document.createElement('li');
+
+                // Create checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                li.appendChild(checkbox);
+
+                // Create label
+                const label = document.createElement('span');
+                label.textContent = value;
+                li.appendChild(label);
+
+                // Create cross button
+                const crossButton = document.createElement('button');
+                crossButton.textContent = '✖';
+                crossButton.className = 'cross-button';
+                crossButton.onclick = () => {
+                    list.removeChild(li);
+                };
+                li.appendChild(crossButton);
+
+                // Append to list
+                list.appendChild(li);
+
+                // Clear input
+                input.value = '';
+            }
+        }
+
+        function createNewList() {
+            const listContainer = document.getElementById('list-container');
+
+            // Clone the original list container
+            const newContainer = listContainer.firstElementChild.cloneNode(true);
+
+            // Clear the cloned list container inputs and lists
+            const input = newContainer.querySelector('input[type="text"]');
+            const ul = newContainer.querySelector('ul');
+            const h1 = newContainer.querySelector('h1');
+
+            input.value = '';
+            ul.innerHTML = '';
+            h1.textContent = 'Enter a suitable Heading';
+
+            // Append the new container to the list-container
+            listContainer.appendChild(newContainer);
+        }
+
+        function removeList(button) {
+            const container = button.parentElement;
+            container.parentElement.removeChild(container);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
